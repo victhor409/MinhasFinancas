@@ -1,0 +1,5 @@
+package com.jvictor.minhasFinancas.exception;
+
+public class ErroAutenticacao {
+
+}
