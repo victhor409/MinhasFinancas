@@ -2,8 +2,9 @@
 <section name="Workbench">
 	<section name="MavenProjectImportWizardPage">
 		<list key="rootDirectory">
-			<item value="C:\Projetos\MinhasFinancas\MinhasFinancas"/>
+			<item value="/home/jvictor/Documents/workspace-spring-tool-suite-4-4.19.0.RELEASE/MinhasFinancas/MinhasFinancas"/>
 			<item value="/home/jvictor/Documents/workspace-spring-tool-suite-4-4.19.0.RELEASE/MinhasFinancas"/>
+			<item value="C:\Projetos\MinhasFinancas\MinhasFinancas"/>
 		</list>
 		<list key="projectNameTemplate">
 			<item value="[artifactId]"/>

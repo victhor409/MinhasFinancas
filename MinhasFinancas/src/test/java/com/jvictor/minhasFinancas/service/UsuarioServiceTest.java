@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -30,17 +31,14 @@ import com.jvictor.minhasFinancas.service.impl.UsuarioServiceImpl;
 public class UsuarioServiceTest {
 	
 	
-	 UsuarioService service;
+	 
 	
 	 @MockBean
 	 UsuarioRepository repository;
 	
-	
-	@Before
-	public void setUp() {
-		service = new UsuarioServiceImpl(repository);
-	}
-	
+	 @SpyBean
+	 UsuarioServiceImpl service;
+
 	@Test
 	public void deveAutenticarUmUsuarioComSucesso() {
 		//cenario
@@ -116,6 +114,48 @@ public class UsuarioServiceTest {
 		
 	}
 	
+	@Test
+	public void  deveSalvarUmUsuario() {
+		
+		//cenario
+		Mockito.doNothing().when(service).validarEmail(Mockito.anyString());
+		Usuario usuario = Usuario.builder().id(1L)
+										   .nome("nome")
+										   .email("email@email.com")
+										   .senha("senha").build();		
+		
+		Mockito.when(repository.save(Mockito.any(Usuario.class))).thenReturn(usuario);
+		
+		//acao
+		Usuario usuarioSalvo = service.salvarUsuario(usuario);
+		
+		//verificacao
+		
+		Assertions.assertThat(usuarioSalvo).isNotNull();
+		Assertions.assertThat(usuarioSalvo.getId()).isEqualTo(1L);
+		Assertions.assertThat(usuarioSalvo.getNome()).isEqualTo("nome");
+		Assertions.assertThat(usuarioSalvo.getEmail()).isEqualTo("email@email.com");
+		Assertions.assertThat(usuarioSalvo.getSenha()).isEqualTo("senha");
+		
+	}
+	
+	
+	public void naoDeveSalvarUmUsuarioComEmailCadastrado() {
+		
+		String email = "email@email.com";
+		
+		//cenario
+		Usuario usuario = Usuario.builder().email(email).build();
+		Mockito.doThrow(RegraNegocioException.class).when(service).validarEmail(email);
+		
+		//acao
+		service.salvarUsuario(usuario);
+		
+		//verificacao
+		Mockito.verify(repository, Mockito.never()).save(usuario);
+		
+		
+	}
 	
 	
 	

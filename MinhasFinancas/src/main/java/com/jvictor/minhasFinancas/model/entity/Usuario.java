@@ -19,6 +19,8 @@ import lombok.Data;
 @Builder
 public class Usuario {
 	
+	
+
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
