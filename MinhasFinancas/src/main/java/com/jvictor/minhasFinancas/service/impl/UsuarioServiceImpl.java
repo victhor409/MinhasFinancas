@@ -14,8 +14,7 @@ import com.jvictor.minhasFinancas.service.UsuarioService;
 public class UsuarioServiceImpl implements UsuarioService {
 
 	private UsuarioRepository repository;
-	
-	
+
 	public UsuarioServiceImpl(UsuarioRepository repository) {
 		super();
 		this.repository = repository;
@@ -23,25 +22,25 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	@Override
 	public Usuario autenticar(String email, String senha) {
-		
+
 		Optional<Usuario> usuario = repository.findByEmail(email);
-		
-		if(!usuario.isPresent()) {
+
+		if (!usuario.isPresent()) {
 			throw new ErroAutenticacao("Ususario nao encontrado");
 		}
-		
-		if(!usuario.get().getSenha().equals(senha)) {
+
+		if (!usuario.get().getSenha().equals(senha)) {
 			throw new ErroAutenticacao("Senha Invalida");
 		}
-		
+
 		return usuario.get();
 	}
 
 	@Override
 	public Usuario salvarUsuario(Usuario usuario) {
-		
+
 		validarEmail(usuario.getEmail());
-		
+
 		return repository.save(usuario);
 	}
 
@@ -53,5 +52,11 @@ public class UsuarioServiceImpl implements UsuarioService {
 		if (exists) {
 			throw new RegraNegocioException("Já Exste um Usuario com esse email cadastrado !");
 		}
+	}
+
+	@Override
+	public Optional<Usuario> obterPorId(Long id) {
+
+		return repository.findById(id);
 	}
 }
