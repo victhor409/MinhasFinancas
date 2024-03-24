@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jvictor.minhasFinancas.api.dto.UsuarioDTO;
@@ -51,6 +52,18 @@ public class UsuarioController {
 		
 		
 	}
+	
+	@PostMapping("/autenticar")
+	public ResponseEntity autenticar(@RequestBody UsuarioDTO dto ) {
+		try {
+			Usuario usuarioAutenticado = service.autenticar(dto.getEmail(), dto.getSenha());
+			return ResponseEntity.ok(usuarioAutenticado);
+		}catch(Exception e) {
+			return ResponseEntity.badRequest().body(e);
+		}
+	}
+	
+	
 	
 	@GetMapping("/saldo")
 	public ResponseEntity obterSaldoPorUsuario( @PathVariable("id")  Long id) {

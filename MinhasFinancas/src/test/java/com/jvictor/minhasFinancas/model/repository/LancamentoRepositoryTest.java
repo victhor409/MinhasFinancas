@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
@@ -15,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.jvictor.minhasFinancas.exception.RegraNegocioException;
 import com.jvictor.minhasFinancas.model.entity.Lancamento;
 import com.jvictor.minhasFinancas.model.enums.StatusLancamento;
 import com.jvictor.minhasFinancas.model.enums.TipoLancamento;
@@ -26,7 +28,9 @@ import com.jvictor.minhasFinancas.model.enums.TipoLancamento;
 public class LancamentoRepositoryTest {
 
 	@Autowired
-	LancamentoRepository repository;
+	public static LancamentoRepository repository;
+	
+	
 
 	@Autowired
 	TestEntityManager testEntityManager;
@@ -66,7 +70,7 @@ public class LancamentoRepositoryTest {
 
 	@Test
 	public void deveAtualizarUmLancamento() {
-		Lancamento lancamento = criaEpersisteUmLancamento();ar 
+		Lancamento lancamento = criaEpersisteUmLancamento();
 
 		lancamento.setAno(2020);
 		lancamento.setDescricao("Teste Atualizado");
@@ -88,13 +92,15 @@ public class LancamentoRepositoryTest {
 		return lancamento;
 	}
 
-	private Lancamento criarLancamento() {
+	public static Lancamento criarLancamento() {
 		Lancamento lancamento = Lancamento.builder().ano(2019).mes(1).descricao("lancamento qualquer")
 				.valor(BigDecimal.valueOf(10)).tipo(TipoLancamento.RECEITA).status(StatusLancamento.PENDENTE)
 				.dataCadastro(LocalDate.now()).build();
 
-		lancamento = repository.save(lancamento);
+	
 		return lancamento;
 	}
+	
+	
 
 }

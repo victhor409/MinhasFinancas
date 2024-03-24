@@ -1,4 +1,4 @@
-package com.jvictor.minhasFinancas;
+package com.jvictor.minhasFinancas.teste;
 
 
 import org.junit.Test;
